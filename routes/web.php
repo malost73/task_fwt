@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\TaskController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +17,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('todo');
+})->middleware('auth');
+
+Route::get('/login', function () {
+    if (Auth::check()) {
+        return redirect('/');
+    }
+    return view('login');
+})->name('login');
+
+Route::get('/register', function () {
+    if (Auth::check()) {
+        return redirect('/');
+    }
+    return view('register');
+})->name('register');
+
+Route::post('/login', [LoginController::class, 'login']);
+
+Route::post('/register', [RegisterController::class, 'save']);
+
+
+//Route::post('/', [TaskController::class, 'addTask']);
+
+Route::get('/logout', function () {
+    Auth::logout();
+    return redirect(route('login'));
+})->name('logout');
