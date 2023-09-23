@@ -9,15 +9,20 @@
                         <div class="card-body">
                             <form method="POST" action="{{ route('add-task') }}">
                                 @csrf
-
                                 <div class="input-group">
-                                    <input type="text" class="form-control @error('description') is-invalid @enderror"
-                                           name="description" value="{{ old('description') }}" required
-                                           autocomplete="description">
-                                    <button type="submit" class="btn btn-success "
-                                            id="input-group-button-right">{{ __('Добавить') }}
-                                    </button>
+                                    <div class="col">
+                                        <input type="text"
+                                               class="form-control @error('description') is-invalid @enderror"
+                                               name="description" value="{{ old('description') }}" required
+                                               autocomplete="description">
+                                    </div>
+
+                                    <div class="col col-md-auto">
+                                        <input type="submit" class="btn btn-success" value="{{ __('Добавить') }}">
+                                    </div>
+
                                 </div>
+
                             </form>
                         </div>
                     </div>
