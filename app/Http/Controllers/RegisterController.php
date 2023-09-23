@@ -28,6 +28,7 @@ class RegisterController extends Controller
         $user = User::create($validateFields);
         if ($user) {
             Auth::login($user);
+            session(['user_id' => Auth::user()->id]);
             return redirect('/');
         }
         return redirect(route('login'))->withErrors([

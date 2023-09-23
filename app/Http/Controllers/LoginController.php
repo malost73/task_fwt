@@ -14,6 +14,7 @@ class LoginController extends Controller
         }
         $formField = $request->only(['email', 'password']);
         if (Auth::attempt($formField)) {
+            session(['user_id' => Auth::user()->id]);
             return redirect()->intended();
         }
 

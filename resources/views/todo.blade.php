@@ -6,15 +6,14 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">{{ __('Задача') }}</div>
-
                         <div class="card-body">
-                            <form method="POST" action="{{ '/' }}">
+                            <form method="POST" action="{{ route('add-task') }}">
                                 @csrf
 
                                 <div class="input-group">
-                                    <input type="text" class="form-control @error('task') is-invalid @enderror"
-                                           name="task" value="{{ old('task') }}" required autocomplete="task">
+                                    <input type="text" class="form-control @error('description') is-invalid @enderror"
+                                           name="description" value="{{ old('description') }}" required
+                                           autocomplete="description">
                                     <button type="submit" class="btn btn-success "
                                             id="input-group-button-right">{{ __('Добавить') }}
                                     </button>
@@ -24,62 +23,45 @@
                     </div>
                 </div>
             </div>
+            <div class="container px-4 mt-4">
+                @if($tasks->count()>0)
+                    <h3>Задачи</h3>
+                @endif
+                <div class="table-responsive">
+                    <table style="table-layout: fixed" class="table align-middle table-xxl table-bordered">
 
-            <div class=" col-md-12">
-                <h1>Задачи</h1>
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <th>
-                            #
-                        </th>
-                        <th>
-                            Текст
-                        </th>
-                    </tr>
-                    {{--                        @foreach($tasks as $task)--}}
-                    {{--                            <tr>--}}
-                    {{--                                <td>{{ $task->done }}</td>--}}
-                    {{--                                <td>{{ $task->description}}</td>--}}
-                    {{--                                <td>--}}
-                    {{--                                    <div class="btn-group" role="group">--}}
-                    {{--                                        <a class="btn btn-success" type="button"--}}
-                    {{--                                           href="">Открыть</a>--}}
-                    {{--                                    </div>--}}
-                    {{--                                </td>--}}
-                    {{--                            </tr>--}}
-                    {{--                        @endforeach--}}
-                    </tbody>
-                </table>
+                        <tbody>
+                        @foreach($tasks as $task)
+                            <tr>
+
+                                <td style="width: 5%" align="center">
+
+                                    <form action="{{ route('edit-task', $task->id )}}" method="POST">
+
+                                        @csrf
+                                        <input
+                                            class="btn @if($task->done)  @else @endif>"
+                                            type="submit" name="done"
+                                            value="@if($task->done)✔@else ☐ @endif">
+                                    </form>
+
+                                </td>
+                                <td style="@if($task->done) text-decoration: line-through; @endif width: 85%; overflow: auto; text-overflow: clip;">
+                                    {{ $task->description }}
+                                </td>
+
+                                <td align="center" style="width: 10%">
+                                    <form action="{{ route('delete-task', $task->id )}}" method="GET">
+
+                                        @csrf
+                                        <input class="btn btn-danger" type="submit" value="Удалить">
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
         </div>
-    </div>
 @endsection
-
-
-{{--@extends('layouts.header')--}}
-
-
-{{--@section('content')--}}
-{{--    <div class="container">--}}
-{{--        <div class="row justify-content-center">--}}
-{{--            <div class="col-md-8">--}}
-{{--                <div class="card">--}}
-
-{{--                    <div class="card-header">{{ Auth::user()->name }}, Ваши задачи</div>--}}
-
-{{--                    <div class="card-body">--}}
-{{--                        @if (session('status'))--}}
-{{--                            <div class="alert alert-success" role="alert">--}}
-{{--                                {{ session('status') }}--}}
-{{--                            </div>--}}
-{{--                        @endif--}}
-
-{{--                        You are logged in!--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--@endsection--}}

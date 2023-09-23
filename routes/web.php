@@ -18,9 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', function () {
-    return view('todo');
-})->middleware('auth');
+Route::get('/', [TaskController::class, 'viewTasks'])->middleware('auth');
 
 Route::get('/login', function () {
     if (Auth::check()) {
@@ -40,8 +38,11 @@ Route::post('/login', [LoginController::class, 'login']);
 
 Route::post('/register', [RegisterController::class, 'save']);
 
+Route::post('/add-task', [TaskController::class, 'addTask'])->name('add-task');
 
-//Route::post('/', [TaskController::class, 'addTask']);
+Route::post('/edit-task/{id}', [TaskController::class, 'editTask'])->name('edit-task');
+
+Route::get('/delete-task/{id}', [TaskController::class, 'deleteTask'])->name('delete-task');
 
 Route::get('/logout', function () {
     Auth::logout();
